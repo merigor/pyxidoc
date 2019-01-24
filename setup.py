@@ -9,8 +9,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="pyxidoc",
-    use_scm_version=True,
-    setup_requires=["setuptools_scm"],
+    version="0.1.dev2",
     author="merigor",
     author_email="",
     description="Very simple API documentation generator written in Python3.",
