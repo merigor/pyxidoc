@@ -202,7 +202,8 @@ class Fun(Node):
                         else:
                             res.add(call.format(i.value.func.attr))
                     else:
-                        res.add(EXPR[type(i.value)])
+                        if i.value is not None:
+                            res.add(EXPR[type(i.value)])
             else:
                 self._get_returns(i, res)
 
@@ -210,7 +211,10 @@ class Fun(Node):
         """Collect and evaluate ast.raise statements."""
         for i in ast.iter_child_nodes(node):
             if isinstance(i, ast.Raise):
-                errors.add(i.exc.func.id)
+                try:
+                    errors.add(i.exc.func.id)
+                except AttributeError:
+                    continue
             else:
                 self._get_exceptions(i, errors)
 
@@ -288,7 +292,7 @@ def md_nested_list(datalist, res, level=0):
                 md_nested_list(i, res, level + 1)
             else:
                 res.append(
-                    prefix + "- " + md_escape_underscores(i.descr()) + "  "
+                    prefix + "* " + md_escape_underscores(i.descr()) + "  "
                 )
                 if i.summary() != "None":
                     res.append("  " + prefix + i.summary())
